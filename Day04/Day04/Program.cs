@@ -12,29 +12,6 @@ namespace Day04
         {
             // sort input
             string[] Input = File.ReadAllLines("../../input.txt");
-
-            // DEBUG
-            //Input = null;
-            //Input = new string[] {
-            //    "[1518-11-01 00:00] Guard #10 begins shift",
-            //    "[1518-11-01 00:05] falls asleep",
-            //    "[1518-11-01 00:25] wakes up",
-            //    "[1518-11-01 00:30] falls asleep",
-            //    "[1518-11-01 00:55] wakes up",
-            //    "[1518-11-01 23:58] Guard #99 begins shift",
-            //    "[1518-11-02 00:40] falls asleep",
-            //    "[1518-11-02 00:50] wakes up",
-            //    "[1518-11-03 00:05] Guard #10 begins shift",
-            //    "[1518-11-03 00:24] falls asleep",
-            //    "[1518-11-03 00:29] wakes up",
-            //    "[1518-11-04 00:02] Guard #99 begins shift",
-            //    "[1518-11-04 00:36] falls asleep",
-            //    "[1518-11-04 00:46] wakes up",
-            //    "[1518-11-05 00:03] Guard #99 begins shift",
-            //    "[1518-11-05 00:45] falls asleep",
-            //    "[1518-11-05 00:55] wakes up"
-            //};
-
             DateTime[] Times = new DateTime[Input.Length];
             Tuple<DateTime, string>[] SortedInput = new Tuple<DateTime, string>[Input.Length];
             Regex Expression = new Regex(@"\[(.*?)\]");
@@ -110,7 +87,15 @@ namespace Day04
                         orderby Group.Count() descending
                         select Group.Key).First();
 
-            Console.WriteLine(LazyGuard.Key * LaziestMinute); // 119835
+            Console.WriteLine(LazyGuard.Key * LaziestMinute); // Part1: 119835
+
+            // find most frequent SleepMinute
+            var MostFrequentMinute = (from Pair in SleepMinutes
+                                      group Pair by new { Pair.Item1, Pair.Item2 } into Group
+                                      orderby Group.Count() descending
+                                      select Group.Key).First();
+
+            Console.WriteLine(MostFrequentMinute.Item1 * MostFrequentMinute.Item2); // Part2: 12725
         }
     }
 }
