@@ -10,22 +10,11 @@ namespace Day06
         {
             string[] Input = File.ReadAllLines("../../input.txt");
             Console.WriteLine(Part1(Input)); // 5532
+            Console.WriteLine(Part2(Input)); // 36216
         }
 
         private static int Part1(string[] Input)
         {
-            // debug
-            //Input = null;
-            //Input = new string[]
-            //{
-            //    "1, 1",
-            //    "1, 6",
-            //    "8, 3",
-            //    "3, 4",
-            //    "5, 5",
-            //    "8, 9"
-            //};
-
             List<Tuple<int, int>> Coordinates = new List<Tuple<int, int>>();
             string[] Parts;
             foreach (string Line in Input)
@@ -59,12 +48,8 @@ namespace Day06
                 }
             }
 
-            Console.WriteLine("MaxVertically: " + MaxVertically);
-            Console.WriteLine("MinVertically: " + MinVertically);
-            Console.WriteLine("MaxHorizontally: " + MaxHorizontally);
-            Console.WriteLine("MinHorizontally: " + MinHorizontally);
-
             int WidthHeight = 400; // TODO: auf 100 aufrunden
+            WidthHeight = Math.Max(MaxVertically, MaxHorizontally);
 
             int[][][] Grid = new int[WidthHeight][][];
             for (int i = 0, n = Grid.Length; i < n; i++)
@@ -96,7 +81,7 @@ namespace Day06
                     }
                 }
             }
-            Print(Grid);
+            //Print(Grid);
 
             // filter out infinite areas
             List<int> InfiniteAreaIndices = new List<int>();
@@ -167,6 +152,81 @@ namespace Day06
             }
 
             return Maximum;
+        }
+
+        private static int Part2(string[] Input)
+        {
+            List<Tuple<int, int>> Coordinates = new List<Tuple<int, int>>();
+            string[] Parts;
+            foreach (string Line in Input)
+            {
+                Parts = Line.Split(',');
+                Coordinates.Add(new Tuple<int, int>(Int32.Parse(Parts[0]), Int32.Parse(Parts[1].Trim())));
+            }
+
+            // search min, max, vertically, horizontally
+            int MaxHorizontally = Int32.MinValue;
+            int MinHorizontally = Int32.MaxValue;
+            int MaxVertically = Int32.MinValue;
+            int MinVertically = Int32.MaxValue;
+            for (int i = 0, n = Coordinates.Count; i < n; i++)
+            {
+                if (Coordinates[i].Item1 > MaxHorizontally)
+                {
+                    MaxHorizontally = Coordinates[i].Item1;
+                }
+                if (Coordinates[i].Item2 > MaxVertically)
+                {
+                    MaxVertically = Coordinates[i].Item2;
+                }
+                if (Coordinates[i].Item1 < MinHorizontally)
+                {
+                    MinHorizontally = Coordinates[i].Item1;
+                }
+                if (Coordinates[i].Item2 < MinVertically)
+                {
+                    MinVertically = Coordinates[i].Item2;
+                }
+            }
+            int WidthHeight = 400; // TODO: adjust manually
+
+            int[][][] Grid = new int[WidthHeight][][];
+            for (int i = 0, n = Grid.Length; i < n; i++)
+            {
+                Grid[i] = new int[n][];
+                for (int j = 0; j < n; j++)
+                {
+                    Grid[i][j] = new int[] { 0, 0 };
+                }
+            }
+
+            int Distance;
+            for (int i = 0, n = Coordinates.Count; i < n; i++)
+            {
+                for (int j = 0, m = Grid.Length; j < m; j++)
+                {
+                    for (int k = 0; k < m; k++)
+                    {
+                        Distance = Math.Abs(Coordinates[i].Item1 - k) + Math.Abs(Coordinates[i].Item2 - j);
+
+                        Grid[j][k][1] += Distance;
+                    }
+                }
+            }
+
+            int Count = 0;
+            foreach (var Row in Grid)
+            {
+                foreach (var Cell in Row)
+                {
+                    if (Cell[1] < 10000) // TODO: adjust manually
+                    {
+                        Count++;
+                    }
+                }
+            }
+
+            return Count;
         }
 
         private static void Print(int[][][] Grid)
