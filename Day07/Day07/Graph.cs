@@ -16,7 +16,7 @@ namespace Day07
             List<GraphElement> AvailableElements = new List<GraphElement>();
             foreach (var Element in this.GraphElements)
             {
-                if (Element.Value.prev.Count == 0)
+                if (Element.Value.Prev.Count == 0 && Element.Value.Workload != 0)
                 {
                     AvailableElements.Add(Element.Value);
                 }

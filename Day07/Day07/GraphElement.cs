@@ -7,13 +7,16 @@ namespace Day07
         public GraphElement(char ID)
         {
             this.ID = ID;
-            this.prev = new List<GraphElement>();
-            this.next = new List<GraphElement>();
+            this.Prev = new List<GraphElement>();
+            this.Next = new List<GraphElement>();
+            this.Workload = this.ID - 64 + 60;
         }
 
         public char ID { get; set; }
-        public List<GraphElement> prev { get; set; }
-        public List<GraphElement> next { get; set; }
+        public List<GraphElement> Prev { get; set; }
+        public List<GraphElement> Next { get; set; }
+        public int Workload { get; set; }
+        public Worker Worker { get; set; }
 
         public int CompareTo(object obj)
         {
