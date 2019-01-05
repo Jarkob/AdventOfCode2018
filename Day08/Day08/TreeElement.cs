@@ -29,5 +29,25 @@ namespace Day08
 
             return Sum;
         }
+
+        public int GetValue()
+        {
+            if (this.next.Count == 0)
+            {
+                return this.GetSum();
+            }
+            else
+            {
+                int Value = 0;
+                foreach (var MetaDataEntry in this.MetaData)
+                {
+                    if (this.next.Count >= MetaDataEntry)
+                    {
+                        Value += this.next[MetaDataEntry - 1].GetValue();
+                    }
+                }
+                return Value;
+            }
+        }
     }
 }

@@ -13,14 +13,11 @@ namespace Day08
         public static void Main(string[] args)
         {
             string Input = File.ReadAllText("../../input.txt");
-
-            // debug
-            //Input = "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2";
-
             int[] Numbers = Array.ConvertAll(Input.Split(' '), int.Parse);
             int Index = 0;
             TreeElement Root = GetTree(Numbers, ref Index);
             Console.WriteLine(Root.GetSum()); // Part1: 45750
+            Console.WriteLine(Root.GetValue()); // Part2: 23266
         }
 
         private static TreeElement GetTree(int[] Numbers, ref int Index)
