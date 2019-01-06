@@ -8,43 +8,30 @@ namespace Day09
     {
         public Ring()
         {
-            this.Marbles = new List<int>();
-            this.Index = 0;
-            this.Marbles.Add(0);
+            this.Marbles = new LinkedList<int>();
+            this.Marbles.AddFirst(0);
+            this.Current = this.Marbles.First;
         }
 
-        public int Index;
-        public List<int> Marbles { get; set; }
+        public LinkedListNode<int> Current { get; set; }
+        public LinkedList<int> Marbles { get; set; }
 
         public void InsertClockWise(int Marble)
         {
-            if (this.Index == this.Marbles.Count - 1)
-            {
-                this.Marbles.Insert(1, Marble);
-                this.Index = 1;
-            }
-            else if (this.Index == this.Marbles.Count - 2)
-            {
-                this.Marbles.Add(Marble);
-                this.Index = this.Marbles.Count - 1;
-            }
-            else
-            {
-                Index += 2;
-                this.Marbles.Insert(Index, Marble);
-            }
+            this.Current = this.Current.Next ?? this.Marbles.First;
+            this.Marbles.AddAfter(this.Current, Marble);
+            this.Current = this.Current.Next;
         }
 
         public int RemoveCounterClockWise()
         {
-            Index -= 7;
-            int Value = -1;
-            if (Index < 0)
+            for (int i = 0; i < 7; i++)
             {
-                Index = this.Marbles.Count + Index;
+                this.Current = this.Current.Previous ?? this.Marbles.Last;
             }
-            Value = this.Marbles[Index];
-            this.Marbles.RemoveAt(Index);
+            int Value = this.Current.Value;
+            this.Current = this.Current.Next ?? this.Marbles.First;
+            this.Marbles.Remove(Current.Previous ?? this.Marbles.Last);
             return Value;
         }
 

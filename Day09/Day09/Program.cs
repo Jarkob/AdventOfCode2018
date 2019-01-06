@@ -10,11 +10,9 @@ namespace Day09
 
             int NumberOfPlayers = 416;
             int NumberOfMarbles = 71617;
+            NumberOfMarbles *= 100; // Part2
 
-            //NumberOfMarbles = 7999; // FIXME
-            //NumberOfPlayers = 13; // FIXME
-
-            int[] PlayerScores = new int[NumberOfPlayers];
+            long[] PlayerScores = new long[NumberOfPlayers];
             int Player = 0;
 
             Ring Marbles = new Ring();
@@ -30,13 +28,11 @@ namespace Day09
                 {
                     Marbles.InsertClockWise(Marble);
                 }
-                //Console.WriteLine(Marbles.ToString());
-
                 Player = Player == NumberOfPlayers - 1 ? 0 : Player + 1;
             }
 
             // find highscore
-            int HighScore = 0;
+            long HighScore = 0;
             foreach (var Score in PlayerScores)
             {
                 if (Score > HighScore)
@@ -45,7 +41,8 @@ namespace Day09
                 }
             }
 
-            Console.WriteLine("Highscore: {0}", HighScore); // Part1: 436720
+            Console.WriteLine("Highscore: " + HighScore); // Part1: 436720
+            // Part2: 3527845091
         }
     }
 }
